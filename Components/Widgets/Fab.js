@@ -356,7 +356,7 @@ export default class Fab extends NativeBaseComponent {
 
     render() {
         const { props: {active} } = this;
-        if(!this.props.active) {
+        if(!active) {
           this.containerHeight = new Animated.Value(56);
           this.containerWidth = new Animated.Value(56);
           this.buttonScale = new Animated.Value(0);
@@ -366,6 +366,19 @@ export default class Fab extends NativeBaseComponent {
           this.containerWidth = this.containerWidth || new Animated.Value(0);
           this.buttonScale = this.buttonScale || new Animated.Value(0);
         }
+        if (!this.props.active) {
+          this.containerHeight = new Animated.Value(0);
+          this.containerWidth = new Animated.Value(0);
+          setTimeout(() => {
+            Animated.spring(this.containerHeight, {
+              toValue: 56
+            }).start();
+            Animated.spring(this.buttonScale, {
+              toValue: 0
+            }).start();
+          }, 0)
+        }
+
         return(
             <Animated.View ref={c => this._root = c} style={this.getContainerStyle()}>
               {this.renderButtons()}
